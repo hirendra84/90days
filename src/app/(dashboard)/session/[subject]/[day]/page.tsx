@@ -182,22 +182,12 @@ export default async function SessionPage({
         </div>
 
         {/* Complete Action */}
-        <div className="flex items-center justify-end pt-4 gap-4">
+        <div className="flex items-center justify-end pt-4 gap-4 border-b border-border/50 pb-8">
           {isCompleted ? (
-            <>
-              <Button size="lg" disabled className="h-12 px-8 rounded-full text-base font-semibold bg-green-500/20 text-green-500 hover:bg-green-500/20">
-                <CheckCircle2 className="w-5 h-5 mr-2" />
-                Completed
-              </Button>
-              {dayNumber < 90 && (
-                <Link href={`/session/${subjectData.slug}/day-${dayNumber + 1}`}>
-                  <Button size="lg" className="h-12 px-8 rounded-full text-base font-semibold text-white hover:opacity-90" style={{ backgroundColor: subjectInfo.color }}>
-                    Next Session
-                    <ArrowLeft className="w-5 h-5 ml-2 rotate-180" />
-                  </Button>
-                </Link>
-              )}
-            </>
+            <Button size="lg" disabled className="h-12 px-8 rounded-full text-base font-semibold bg-green-500/20 text-green-500 hover:bg-green-500/20">
+              <CheckCircle2 className="w-5 h-5 mr-2" />
+              Completed
+            </Button>
           ) : (
             <form action={async () => {
               "use server"
@@ -208,6 +198,27 @@ export default async function SessionPage({
                 Complete Session
               </Button>
             </form>
+          )}
+        </div>
+
+        {/* Navigation */}
+        <div className="flex items-center justify-between pt-4">
+          {dayNumber > 1 ? (
+            <Link href={`/session/${subjectData.slug}/day-${dayNumber - 1}`}>
+              <Button variant="outline" className="h-10 rounded-full">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Previous Session
+              </Button>
+            </Link>
+          ) : <div></div>}
+          
+          {dayNumber < 90 && (
+            <Link href={`/session/${subjectData.slug}/day-${dayNumber + 1}`}>
+              <Button variant="outline" className="h-10 rounded-full">
+                Next Session
+                <ArrowLeft className="w-4 h-4 ml-2 rotate-180" />
+              </Button>
+            </Link>
           )}
         </div>
       </div>
