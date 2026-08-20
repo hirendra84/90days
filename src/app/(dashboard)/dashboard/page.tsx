@@ -151,10 +151,28 @@ export default async function DashboardPage() {
             </div>
           </div>
           
-          <div className="hidden md:flex flex-col items-center justify-center bg-background/50 rounded-full w-40 h-40 border-8 border-primary/20 relative shadow-inner">
-             <div className="absolute inset-0 border-8 border-primary rounded-full" style={{ clipPath: `polygon(50% 50%, 50% 0, ${currentDay > totalDays/2 ? '100% 100%, 0 100%' : '100% 0'}, 0 50%)` }}></div>
-             <span className="text-3xl font-bold text-foreground z-10">{currentDay}</span>
-             <span className="text-xs text-muted-foreground font-medium uppercase tracking-widest z-10">/ {totalDays}</span>
+          <div className="hidden md:flex flex-col items-center justify-center bg-background/50 rounded-full w-40 h-40 relative shadow-inner">
+             {/* Background Circle */}
+             <svg className="w-full h-full absolute inset-0 -rotate-90 transform" viewBox="0 0 100 100">
+               <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="8" className="text-primary/20" />
+               {/* Progress Circle */}
+               <circle 
+                 cx="50" 
+                 cy="50" 
+                 r="46" 
+                 fill="none" 
+                 stroke="currentColor" 
+                 strokeWidth="8" 
+                 className="text-primary transition-all duration-1000 ease-in-out" 
+                 strokeDasharray="289.026" 
+                 strokeDashoffset={289.026 - (289.026 * (currentDay / totalDays))}
+                 strokeLinecap="round"
+               />
+             </svg>
+             <div className="flex flex-col items-center justify-center z-10">
+               <span className="text-3xl font-bold text-foreground">{currentDay}</span>
+               <span className="text-xs text-muted-foreground font-medium uppercase tracking-widest">/ {totalDays}</span>
+             </div>
           </div>
         </div>
       </section>
