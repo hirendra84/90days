@@ -1,0 +1,258 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  password      String?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  profile       Profile?
+  dailyPlans    DailyPlan[]
+  dailyProgress DailyProgress[]
+  dsaNotes      DSANote[]
+  streaks       Streak[]
+  journalEntries JournalEntry[]
+  mockAttempts  MockAttempt[]
+  formulaNotes  FormulaNote[]
+  weeklyReviews WeeklyReview[]
+  sessionCompletions SessionCompletion[]
+  dsaProblems   DSAProblem[]
+}
+
+model Profile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  timezone       String   @default("UTC")
+  dailyReminder  Boolean  @default(true)
+  targetDate     DateTime?
+  dailyGoalHours Float    @default(2.0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Subject {
+  id          String   @id @default(cuid())
+  name        String   @unique // Logical Reasoning, Quantitative Aptitude, Verbal Ability, DSA
+  slug        String   @unique // logical-reasoning, aptitude, verbal, dsa
+  description String?
+  topics      Topic[]
+  resources   Resource[]
+}
+
+model Topic {
+  id          String   @id @default(cuid())
+  subjectId   String
+  subject     Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  title       String
+  slug        String
+  order       Int
+  description String?
+  sessions    Session[]
+  resources   Resource[]
+}
+
+model Session {
+  id          String   @id @default(cuid())
+  topicId     String
+  topic       Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  title       String
+  content     String?  // Markdown content
+  estimatedMins Int    @default(45)
+  dayNumber   Int
+  
+  completions SessionCompletion[]
+}
+
+model SessionCompletion {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId   String
+  session     Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  completedAt DateTime @default(now())
+  
+  @@unique([userId, sessionId])
+}
+
+model DailyPlan {
+  id                      String   @id @default(cuid())
+  userId                  String
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dayNumber               Int
+  date                    DateTime @db.Date
+  logicalReasoningTopicId String?
+  aptitudeTopicId         String?
+  verbalTopicId           String?
+  dsaTopicId              String?
+  
+  @@unique([userId, date])
+}
+
+model DailyProgress {
+  id                        String   @id @default(cuid())
+  userId                    String
+  user                      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date                      DateTime @db.Date
+  logicalReasoningCompleted Boolean  @default(false)
+  aptitudeCompleted         Boolean  @default(false)
+  verbalCompleted           Boolean  @default(false)
+  dsaCompleted              Boolean  @default(false)
+  allCompleted              Boolean  @default(false)
+  completedAt               DateTime?
+  
+  @@unique([userId, date])
+}
+
+model Streak {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentStreak Int      @default(0)
+  longestStreak Int      @default(0)
+  lastUpdateDate DateTime? @db.Date
+  
+  @@unique([userId])
+}
+
+model DSANote {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dayNumber        Int
+  date             DateTime @db.Date
+  whatLearned      String?
+  problemsSolved   String?
+  whatWasDifficult String?
+  tomorrowPlan     String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  @@unique([userId, date])
+}
+
+model DSAProblem {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  platform    String   // LeetCode, GeeksforGeeks, etc.
+  difficulty  String   // Easy, Medium, Hard
+  link        String?
+  status      String   // Not Started, Attempted, Solved, Need Revision
+  date        DateTime @db.Date
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  subjectId   String
+  subject     Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topicId     String?
+  topic       Topic?   @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  title       String
+  provider    String
+  url         String
+  type        String   // Video, Article, Practice
+  difficulty  String?
+  thumbnail   String?
+  duration    String?
+}
+
+model YoutubeResource {
+  id          String   @id @default(cuid())
+  title       String
+  channel     String
+  url         String
+  subject     String
+  topic       String
+  duration    String?
+  thumbnail   String?
+}
+
+model MockTest {
+  id          String   @id @default(cuid())
+  title       String
+  weekNumber  Int
+  questions   MockQuestion[]
+  attempts    MockAttempt[]
+}
+
+model MockQuestion {
+  id          String   @id @default(cuid())
+  testId      String
+  test        MockTest @relation(fields: [testId], references: [id], onDelete: Cascade)
+  subject     String   // Logical Reasoning, Quantitative Aptitude, Verbal Ability
+  topic       String?
+  question    String
+  options     String   // JSON string of options
+  correctAnswer String
+  explanation String?
+}
+
+model MockAttempt {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  testId      String
+  test        MockTest @relation(fields: [testId], references: [id], onDelete: Cascade)
+  score       Int      @default(0)
+  totalQuestions Int
+  accuracy    Float    @default(0)
+  timeTakenMs Int      @default(0)
+  date        DateTime @default(now())
+}
+
+model JournalEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime @db.Date
+  content     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([userId, date])
+}
+
+model FormulaNote {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category    String   // Aptitude formulas, Reasoning tricks, Grammar rules, DSA patterns, Personal notes
+  title       String
+  content     String
+  tags        String?  // Comma separated
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model WeeklyReview {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekNumber     Int
+  lrCompleted    Int      @default(0)
+  aptCompleted   Int      @default(0)
+  verbalCompleted Int     @default(0)
+  dsaCompleted   Int      @default(0)
+  totalCompleted Int      @default(0)
+  accuracy       Float?
+  studyTimeMs    Int      @default(0)
+  weakestArea    String?
+  strongestArea  String?
+  thingsToImprove String?
+  createdAt      DateTime @default(now())
+  
+  @@unique([userId, weekNumber])
+}
