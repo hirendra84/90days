@@ -6,8 +6,6 @@ export default function AptitudePage() {
       title="Quantitative Aptitude" 
       slug="aptitude" 
       color="var(--color-aptitude)" 
-      totalDays={90} 
-      currentDay={18} 
     />
   )
 }

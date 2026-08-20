@@ -6,8 +6,6 @@ export default function LogicalReasoningPage() {
       title="Logical Reasoning" 
       slug="logical-reasoning" 
       color="var(--color-lr)" 
-      totalDays={90} 
-      currentDay={18} 
     />
   )
 }

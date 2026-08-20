@@ -3,29 +3,39 @@ import { PlayCircle, CheckCircle2, Lock, FileText, Target } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 
+import { prisma } from "@/lib/prisma"
+import { auth } from "@/lib/auth"
+import { redirect } from "next/navigation"
+
 interface SubjectPageProps {
   title: string;
   slug: string;
   color: string;
-  totalDays: number;
-  currentDay: number;
 }
 
-export function SubjectPage({ title, slug, color, totalDays, currentDay }: SubjectPageProps) {
+export async function SubjectPage({ title, slug, color }: SubjectPageProps) {
+  const session = await auth()
+  if (!session?.user) redirect('/login')
+  const userId = session.user.id!
+
+  const subject = await prisma.subject.findUnique({ where: { slug } })
+  if (!subject) redirect('/dashboard')
+
+  const totalDays = 90
+  
+  // Calculate Current Day based on total DailyProgress records that have allCompleted = true
+  const completedDaysCount = await prisma.dailyProgress.count({
+    where: { userId, allCompleted: true }
+  })
+  const currentDay = completedDaysCount + 1 <= 90 ? completedDaysCount + 1 : 90
+  
   const percentComplete = Math.round((currentDay / totalDays) * 100);
 
-  const daysList = Array.from({ length: 10 }, (_, i) => {
-    const dayNum = i + 15; // Mock starting from day 15
-    const isCompleted = dayNum < currentDay;
-    const isCurrent = dayNum === currentDay;
-    const isLocked = dayNum > currentDay;
-    
-    return {
-      day: dayNum,
-      topic: `${title} Topic ${dayNum}`,
-      status: isCompleted ? "completed" : isCurrent ? "current" : "locked"
-    };
-  });
+  // Fetch real syllabus topics
+  const topics = await prisma.topic.findMany({
+    where: { subjectId: subject.id },
+    orderBy: { order: 'asc' }
+  })
 
   return (
     <div className="flex flex-col gap-10 pb-12 animate-in fade-in duration-500">
@@ -65,60 +75,62 @@ export function SubjectPage({ title, slug, color, totalDays, currentDay }: Subje
         </div>
 
         <div className="space-y-4">
-          {daysList.map((item) => (
-            <div 
-              key={item.day} 
-              className={`flex flex-col md:flex-row md:items-center justify-between p-5 rounded-2xl border transition-all ${
-                item.status === 'current' 
-                  ? 'border-[var(--subject-color)]/50 bg-card shadow-md ring-1 ring-[var(--subject-color)]/10' 
-                  : item.status === 'completed'
-                    ? 'border-border/50 bg-card/50'
-                    : 'border-border/30 bg-muted/10 opacity-70'
-              }`}
-              style={{ '--subject-color': color } as React.CSSProperties}
-            >
-              <div className="flex items-start md:items-center gap-4 mb-4 md:mb-0">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
-                  item.status === 'completed' ? 'bg-green-500/10 text-green-500' :
-                  item.status === 'current' ? 'bg-[var(--subject-color)]/10 text-[var(--subject-color)]' :
-                  'bg-muted text-muted-foreground'
-                }`}>
-                  {item.status === 'completed' ? <CheckCircle2 className="w-6 h-6" /> : 
-                   item.status === 'locked' ? <Lock className="w-5 h-5" /> : 
-                   <span className="font-bold text-lg">{item.day}</span>}
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Day {item.day}</span>
-                    {item.status === 'current' && <span className="px-2 py-0.5 rounded-full bg-[var(--subject-color)]/10 text-[var(--subject-color)] text-xs font-bold">UP NEXT</span>}
+          {topics.map((item) => {
+            const isCompleted = item.order < currentDay;
+            const isCurrent = item.order === currentDay;
+            const isLocked = item.order > currentDay;
+            const status = isCompleted ? "completed" : isCurrent ? "current" : "locked";
+
+            return (
+              <div 
+                key={item.id} 
+                className={`flex flex-col md:flex-row md:items-center justify-between p-5 rounded-2xl border transition-all ${
+                  status === 'current' 
+                    ? 'border-[var(--subject-color)]/50 bg-card shadow-md ring-1 ring-[var(--subject-color)]/10' 
+                    : status === 'completed'
+                      ? 'border-border/50 bg-card/50'
+                      : 'border-border/30 bg-muted/10 opacity-70'
+                }`}
+                style={{ '--subject-color': color } as React.CSSProperties}
+              >
+                <div className="flex items-start md:items-center gap-4 mb-4 md:mb-0">
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
+                    status === 'completed' ? 'bg-green-500/10 text-green-500' :
+                    status === 'current' ? 'bg-[var(--subject-color)]/10 text-[var(--subject-color)]' :
+                    'bg-muted text-muted-foreground'
+                  }`}>
+                    {status === 'completed' ? <CheckCircle2 className="w-6 h-6" /> : 
+                     <span className="font-bold text-lg">{item.order}</span>}
                   </div>
-                  <h3 className="text-lg font-bold">{item.topic}</h3>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-3 md:ml-auto pl-16 md:pl-0">
-                <div className="hidden lg:flex items-center gap-6 mr-6 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2"><PlayCircle className="w-4 h-4" /> Video</div>
-                  <div className="flex items-center gap-2"><FileText className="w-4 h-4" /> Notes</div>
-                  <div className="flex items-center gap-2"><Target className="w-4 h-4" /> Practice</div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Day {item.order}</span>
+                      {status === 'current' && <span className="px-2 py-0.5 rounded-full bg-[var(--subject-color)]/10 text-[var(--subject-color)] text-xs font-bold">UP NEXT</span>}
+                    </div>
+                    <h3 className="text-lg font-bold">{item.title}</h3>
+                  </div>
                 </div>
                 
-                {item.status === 'locked' ? (
-                  <Button disabled variant="outline" className="w-full md:w-auto">Locked</Button>
-                ) : (
-                  <Link href={`/session/${slug}/day-${item.day}`} className="w-full md:w-auto block">
+                <div className="flex items-center gap-3 md:ml-auto pl-16 md:pl-0">
+                  <div className="hidden lg:flex items-center gap-6 mr-6 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2"><PlayCircle className="w-4 h-4" /> Video</div>
+                    <div className="flex items-center gap-2"><FileText className="w-4 h-4" /> Notes</div>
+                    <div className="flex items-center gap-2"><Target className="w-4 h-4" /> Practice</div>
+                  </div>
+                  
+                  <Link href={`/session/${slug}/day-${item.order}`} className="w-full md:w-auto block">
                     <Button 
-                      className={`w-full md:w-auto ${item.status === 'current' ? '' : ''}`}
-                      variant={item.status === 'completed' ? 'secondary' : 'default'}
-                      style={item.status === 'current' ? { backgroundColor: color, color: '#fff' } : {}}
+                      className={`w-full md:w-auto ${status === 'current' ? '' : ''}`}
+                      variant={status === 'completed' ? 'secondary' : status === 'locked' ? 'outline' : 'default'}
+                      style={status === 'current' ? { backgroundColor: color, color: '#fff' } : {}}
                     >
-                      {item.status === 'completed' ? 'Review Session' : 'Start Session'}
+                      {status === 'completed' ? 'Review Session' : status === 'locked' ? 'Preview Upcoming' : 'Start Session'}
                     </Button>
                   </Link>
-                )}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </section>
     </div>

@@ -182,12 +182,22 @@ export default async function SessionPage({
         </div>
 
         {/* Complete Action */}
-        <div className="flex items-center justify-end pt-4">
+        <div className="flex items-center justify-end pt-4 gap-4">
           {isCompleted ? (
-            <Button size="lg" disabled className="h-12 px-8 rounded-full text-base font-semibold bg-green-500/20 text-green-500 hover:bg-green-500/20">
-              <CheckCircle2 className="w-5 h-5 mr-2" />
-              Completed
-            </Button>
+            <>
+              <Button size="lg" disabled className="h-12 px-8 rounded-full text-base font-semibold bg-green-500/20 text-green-500 hover:bg-green-500/20">
+                <CheckCircle2 className="w-5 h-5 mr-2" />
+                Completed
+              </Button>
+              {dayNumber < 90 && (
+                <Link href={`/session/${subjectData.slug}/day-${dayNumber + 1}`}>
+                  <Button size="lg" className="h-12 px-8 rounded-full text-base font-semibold text-white hover:opacity-90" style={{ backgroundColor: subjectInfo.color }}>
+                    Next Session
+                    <ArrowLeft className="w-5 h-5 ml-2 rotate-180" />
+                  </Button>
+                </Link>
+              )}
+            </>
           ) : (
             <form action={async () => {
               "use server"

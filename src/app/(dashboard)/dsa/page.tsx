@@ -6,8 +6,6 @@ export default function DSAPage() {
       title="Data Structures & Algorithms" 
       slug="dsa" 
       color="var(--color-dsa)" 
-      totalDays={90} 
-      currentDay={18} 
     />
   )
 }

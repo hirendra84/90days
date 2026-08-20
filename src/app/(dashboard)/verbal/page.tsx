@@ -6,8 +6,6 @@ export default function VerbalPage() {
       title="Verbal Ability" 
       slug="verbal" 
       color="var(--color-verbal)" 
-      totalDays={90} 
-      currentDay={18} 
     />
   )
 }
