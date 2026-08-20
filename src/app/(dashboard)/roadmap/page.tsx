@@ -94,22 +94,22 @@ export default async function RoadmapPage() {
                 )}
               </div>
               
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Logical Reasoning</span>
-                  <span className="font-medium truncate max-w-[120px]" title={dayData.topics.lr}>{dayData.topics.lr}</span>
+              <div className="grid grid-cols-1 gap-3 text-sm mt-3">
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground uppercase tracking-wider">Logical Reasoning</span>
+                  <span className="font-medium">{dayData.topics.lr}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Aptitude</span>
-                  <span className="font-medium truncate max-w-[120px]" title={dayData.topics.aptitude}>{dayData.topics.aptitude}</span>
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground uppercase tracking-wider">Quant Aptitude</span>
+                  <span className="font-medium">{dayData.topics.aptitude}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Verbal</span>
-                  <span className="font-medium truncate max-w-[120px]" title={dayData.topics.verbal}>{dayData.topics.verbal}</span>
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground uppercase tracking-wider">Verbal Ability</span>
+                  <span className="font-medium">{dayData.topics.verbal}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">DSA</span>
-                  <span className="font-medium truncate max-w-[120px]" title={dayData.topics.dsa}>{dayData.topics.dsa}</span>
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground uppercase tracking-wider">Data Structures (DSA)</span>
+                  <span className="font-medium">{dayData.topics.dsa}</span>
                 </div>
               </div>
               
