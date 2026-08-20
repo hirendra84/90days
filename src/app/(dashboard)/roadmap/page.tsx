@@ -16,8 +16,24 @@ export default async function RoadmapPage() {
   const completedDays = await prisma.dailyProgress.count({
     where: { userId, allCompleted: true }
   })
-  
   const currentDay = completedDays + 1 <= 90 ? completedDays + 1 : 90
+  
+  // Fetch today's progress to calculate dynamic progress bar for "Today"
+  const today = new Date()
+  today.setHours(0,0,0,0)
+  
+  const todayProgress = await prisma.dailyProgress.findUnique({
+    where: { userId_date: { userId, date: today } }
+  })
+  
+  const completedTasks = todayProgress ? [
+    todayProgress.logicalReasoningCompleted,
+    todayProgress.aptitudeCompleted,
+    todayProgress.verbalCompleted,
+    todayProgress.dsaCompleted
+  ].filter(Boolean).length : 0;
+  
+  const currentDayProgressPercentage = (completedTasks / 4) * 100;
 
   // Fetch all topics to build the roadmap
   const allTopics = await prisma.topic.findMany({
@@ -40,7 +56,7 @@ export default async function RoadmapPage() {
     return {
       day,
       status: day < currentDay ? "completed" : day === currentDay ? "current" : "locked",
-      progress: day < currentDay ? 100 : day === currentDay ? 0 : 0,
+      progress: day < currentDay ? 100 : day === currentDay ? currentDayProgressPercentage : 0,
       topics: {
         lr: lrTopic,
         aptitude: aptTopic,
@@ -117,10 +133,10 @@ export default async function RoadmapPage() {
                 <div className="mt-4 pt-4 border-t border-border/50">
                   <div className="flex justify-between text-xs mb-1">
                     <span className="font-medium text-primary">Progress</span>
-                    <span>0%</span>
+                    <span>{dayData.progress}%</span>
                   </div>
                   <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-primary" style={{ width: '0%' }}></div>
+                    <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${dayData.progress}%` }}></div>
                   </div>
                 </div>
               )}
