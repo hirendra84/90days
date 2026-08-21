@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import ReCAPTCHA from "react-google-recaptcha"
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState("")
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -24,6 +26,13 @@ export default function ContactPage() {
       email: formData.get("email"),
       issueType: formData.get("issueType"),
       message: formData.get("message"),
+      captchaToken,
+    }
+
+    if (!captchaToken) {
+      setError("Please verify that you are not a robot.")
+      setIsSubmitting(false)
+      return
     }
 
     try {
@@ -153,6 +162,15 @@ export default function ContactPage() {
             <div className="p-3 bg-destructive/15 text-destructive rounded-md flex items-center gap-2 text-sm font-medium">
               <AlertCircle className="h-5 w-5" />
               <span>{error}</span>
+            </div>
+          )}
+
+          {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+            <div className="flex justify-center">
+              <ReCAPTCHA
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                onChange={(token) => setCaptchaToken(token)}
+              />
             </div>
           )}
 
