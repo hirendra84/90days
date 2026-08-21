@@ -60,38 +60,63 @@ export async function GET(request: Request) {
         if (!progress || !progress.verbalCompleted) missingSubjects.push('Verbal Ability');
         if (!progress || !progress.dsaCompleted) missingSubjects.push('DSA');
 
+        const motivations = [
+          {
+            title: "Don't Lose Your Momentum! 🚀",
+            body: "Remember, consistency is the key to cracking your dream placement. Even 20 minutes of focused effort today counts towards your 90-day goal.",
+            color: "#f97316" // Orange
+          },
+          {
+            title: "Your Future Self Will Thank You 💼",
+            body: "Top tech companies don't just look for smarts; they look for grit. Finishing today's tasks is proof that you have what it takes to push through.",
+            color: "#3b82f6" // Blue
+          },
+          {
+            title: "The Code Doesn't Write Itself! 💻",
+            body: "You're one step closer to that offer letter. Don't let today be the day you break your streak. Let's finish strong!",
+            color: "#8b5cf6" // Purple
+          },
+          {
+            title: "Stay Relentless 🔥",
+            body: "Greatness is a lot of small things done well every single day. Log in now and clear out your remaining tasks for today!",
+            color: "#10b981" // Emerald
+          }
+        ];
+
+        const randomMotivation = motivations[Math.floor(Math.random() * motivations.length)];
+
         const htmlMessage = `
-          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden;">
-            <div style="background-color: #f97316; padding: 20px; text-align: center; color: white;">
-              <h1 style="margin: 0; font-size: 24px;">Don't Lose Your Momentum! 🚀</h1>
+          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+            <div style="background-color: ${randomMotivation.color}; padding: 30px 20px; text-align: center; color: white;">
+              <h1 style="margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">${randomMotivation.title}</h1>
             </div>
-            <div style="padding: 30px; background-color: #ffffff; color: #333333;">
-              <p style="font-size: 16px;">Hi ${user.name || 'Achiever'},</p>
+            <div style="padding: 40px 30px; background-color: #ffffff; color: #333333;">
+              <p style="font-size: 18px; margin-top: 0;">Hi <strong>${user.name || 'Achiever'}</strong>,</p>
               
-              <p style="font-size: 16px; line-height: 1.5;">
-                We noticed you haven't completed your daily placement prep for today. You're currently on a <strong>${streakCount}-day streak</strong>! Don't let it slip away!
+              <p style="font-size: 16px; line-height: 1.6; color: #4b5563;">
+                We noticed you haven't completed your daily placement prep for today. You're currently on an impressive <strong>${streakCount}-day streak</strong>! Don't let it slip away!
               </p>
               
-              <div style="background-color: #f3f4f6; padding: 15px; border-radius: 6px; margin: 20px 0;">
-                <h3 style="margin-top: 0; color: #111827;">Remaining for today:</h3>
-                <ul style="margin-bottom: 0;">
-                  ${missingSubjects.map(sub => `<li>${sub}</li>`).join('')}
+              <div style="background-color: #f8fafc; border-left: 4px solid ${randomMotivation.color}; padding: 20px; border-radius: 0 8px 8px 0; margin: 30px 0;">
+                <h3 style="margin-top: 0; color: #1e293b; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Remaining for today:</h3>
+                <ul style="margin-bottom: 0; padding-left: 20px; color: #475569; font-size: 16px;">
+                  ${missingSubjects.map(sub => `<li style="margin-bottom: 8px;">${sub}</li>`).join('')}
                 </ul>
               </div>
 
-              <p style="font-size: 16px; line-height: 1.5;">
-                Remember, consistency is the key to cracking your dream placement. Even 20 minutes of focused effort today counts towards your 90-day goal.
+              <p style="font-size: 16px; line-height: 1.6; color: #4b5563; font-style: italic;">
+                "${randomMotivation.body}"
               </p>
 
-              <div style="text-align: center; margin-top: 30px;">
-                <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard" style="background-color: #f97316; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
-                  Continue My Streak 🔥
+              <div style="text-align: center; margin-top: 40px;">
+                <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard" style="background-color: ${randomMotivation.color}; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block; transition: opacity 0.2s;">
+                  Continue My Streak Now
                 </a>
               </div>
             </div>
-            <div style="background-color: #f9fafb; padding: 15px; text-align: center; color: #6b7280; font-size: 12px;">
-              <p style="margin: 0;">90 Days Placement Sprint</p>
-              <p style="margin: 5px 0 0 0;">You're receiving this because you signed up for placement preparation.</p>
+            <div style="background-color: #f1f5f9; padding: 20px; text-align: center; color: #64748b; font-size: 13px;">
+              <p style="margin: 0; font-weight: 600;">90 Days Placement Sprint</p>
+              <p style="margin: 5px 0 0 0;">You're receiving this because you signed up to crush your placement goals.</p>
             </div>
           </div>
         `;
