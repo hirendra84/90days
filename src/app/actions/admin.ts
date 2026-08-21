@@ -52,8 +52,12 @@ export async function getUsers() {
   const users = await prisma.user.findMany({
     include: {
       streaks: true,
-      dailyProgress: {
-        where: { allCompleted: true }
+      _count: {
+        select: {
+          dailyProgress: {
+            where: { allCompleted: true }
+          }
+        }
       }
     },
     orderBy: { createdAt: 'desc' }
@@ -67,7 +71,7 @@ export async function getUsers() {
     createdAt: user.createdAt,
     currentStreak: user.streaks[0]?.currentStreak || 0,
     longestStreak: user.streaks[0]?.longestStreak || 0,
-    completedDays: user.dailyProgress.length
+    completedDays: user._count.dailyProgress
   }))
 }
 
