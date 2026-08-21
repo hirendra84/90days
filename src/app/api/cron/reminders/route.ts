@@ -72,7 +72,7 @@ export async function GET(request: Request) {
                     We noticed you haven't completed your daily plan for today. Consistency is the secret to landing your dream placement. Don't break the momentum you've built!
                   </p>
                   
-                  <a href="${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/dashboard" style="display: inline-block; padding: 14px 28px; background: linear-gradient(to right, #ea580c, #f97316); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.25);">
+                  <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://90dayprep.vercel.app"}/dashboard" style="display: inline-block; padding: 14px 28px; background: linear-gradient(to right, #ea580c, #f97316); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.25);">
                     Complete Today's Tasks
                   </a>
                   
