@@ -225,6 +225,27 @@ export default async function DashboardPage() {
           />
         </div>
       </section>
+
+      {/* User Guide & SEO Info */}
+      <section className="bg-card border border-border/50 rounded-3xl p-8 md:p-10 shadow-sm mt-4">
+        <div className="max-w-3xl">
+          <h2 className="text-2xl font-bold tracking-tight mb-4">How to Maximize Your 90-Day Sprint</h2>
+          <div className="space-y-4 text-muted-foreground">
+            <p>
+              Welcome to your dedicated placement preparation hub. The 90-Day Sprint is scientifically designed to build consistency and mastery across the four core pillars of tech placements: <strong>Logical Reasoning, Quantitative Aptitude, Verbal Ability, and Data Structures & Algorithms (DSA)</strong>.
+            </p>
+            <p>
+              <strong>Daily Missions:</strong> Every single day, a new set of topics is unlocked. You must complete all four sessions to protect your streak. A higher streak proves your consistency to recruiters.
+            </p>
+            <p>
+              <strong>Using the Roadmap:</strong> If you want to see what's coming up or review past topics, head over to the <Link href="/roadmap" className="text-primary hover:underline font-medium">Roadmap</Link>. We've broken down complex subjects into bite-sized, 45-minute daily sessions.
+            </p>
+            <p>
+              <strong>Resources & Practice:</strong> After completing your daily videos, check the <Link href="/resources" className="text-primary hover:underline font-medium">Resources</Link> tab for curated practice questions, cheat sheets, and interview experiences from top product-based companies.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

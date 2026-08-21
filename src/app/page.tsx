@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Menu, Brain, Calculator, BookOpen, Code2 } from "lucide-react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Footer } from "@/components/footer";
 
 export default function LandingPage() {
   return (
@@ -9,12 +11,23 @@ export default function LandingPage() {
         <Link className="flex items-center justify-center font-bold text-xl tracking-tighter" href="/">
           90D
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
+        
+        {/* Desktop Nav */}
+        <nav className="ml-auto hidden md:flex gap-4 sm:gap-6 items-center">
           <Link className="text-sm font-medium hover:text-primary/80 transition-colors" href="#features">
             Features
           </Link>
-          <Link className="text-sm font-medium hover:text-primary/80 transition-colors" href="#roadmap">
+          <Link className="text-sm font-medium hover:text-primary/80 transition-colors" href="/roadmap">
             Roadmap
+          </Link>
+          <Link className="text-sm font-medium hover:text-primary/80 transition-colors" href="/dashboard">
+            Dashboard
+          </Link>
+          <Link className="text-sm font-medium hover:text-primary/80 transition-colors" href="/resources">
+            Resources
+          </Link>
+          <Link className="text-sm font-medium hover:text-primary/80 transition-colors" href="/user-guide">
+            User Guide
           </Link>
           <Link href="/login">
             <Button variant="ghost" className="text-sm font-medium">Log in</Button>
@@ -23,6 +36,46 @@ export default function LandingPage() {
             <Button className="text-sm font-medium">Start Sprint</Button>
           </Link>
         </nav>
+
+        {/* Mobile Nav */}
+        <div className="ml-auto flex md:hidden items-center">
+          <Sheet>
+            <SheetTrigger className="p-2 hover:bg-accent hover:text-accent-foreground rounded-md transition-colors">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <SheetHeader>
+                <SheetTitle className="text-left font-bold tracking-tighter">90D Sprint</SheetTitle>
+              </SheetHeader>
+              <div className="grid gap-4 py-6">
+                <Link className="text-lg font-medium hover:text-primary/80 transition-colors" href="#features">
+                  Features
+                </Link>
+                <Link className="text-lg font-medium hover:text-primary/80 transition-colors" href="/roadmap">
+                  Roadmap
+                </Link>
+                <Link className="text-lg font-medium hover:text-primary/80 transition-colors" href="/dashboard">
+                  Dashboard
+                </Link>
+                <Link className="text-lg font-medium hover:text-primary/80 transition-colors" href="/resources">
+                  Resources
+                </Link>
+                <Link className="text-lg font-medium hover:text-primary/80 transition-colors" href="/user-guide">
+                  User Guide
+                </Link>
+                <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border/50">
+                  <Link href="/login" className="w-full">
+                    <Button variant="outline" className="w-full text-base">Log in</Button>
+                  </Link>
+                  <Link href="/register" className="w-full">
+                    <Button className="w-full text-base">Start Sprint</Button>
+                  </Link>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </header>
       <main className="flex-1 pt-16">
         {/* Hero Section */}
@@ -130,7 +183,58 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Features Section */}
+        <section id="features" className="w-full py-20 md:py-32 bg-muted/30">
+          <div className="container px-4 md:px-6 mx-auto max-w-6xl">
+            <div className="text-center mb-16 space-y-4">
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Everything you need to crack the interview.</h2>
+              <p className="text-muted-foreground md:text-xl max-w-[800px] mx-auto">
+                No fluff. Just a structured, daily routine combining the 4 essential pillars of placement preparation.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Feature 1 */}
+              <div className="bg-card rounded-2xl p-6 border border-border/50 shadow-sm relative overflow-hidden group hover:border-primary/50 transition-colors">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                  <Brain className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Logical Reasoning</h3>
+                <p className="text-muted-foreground">Master puzzles, patterns, and critical thinking questions asked by top tech companies.</p>
+              </div>
+
+              {/* Feature 2 */}
+              <div className="bg-card rounded-2xl p-6 border border-border/50 shadow-sm relative overflow-hidden group hover:border-orange-500/50 transition-colors">
+                <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center mb-4">
+                  <Calculator className="w-6 h-6 text-orange-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Quant Aptitude</h3>
+                <p className="text-muted-foreground">Build speed and accuracy with mathematics and quantitative aptitude challenges.</p>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="bg-card rounded-2xl p-6 border border-border/50 shadow-sm relative overflow-hidden group hover:border-blue-500/50 transition-colors">
+                <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4">
+                  <BookOpen className="w-6 h-6 text-blue-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Verbal Ability</h3>
+                <p className="text-muted-foreground">Ace the written tests with grammar, reading comprehension, and vocabulary exercises.</p>
+              </div>
+
+              {/* Feature 4 */}
+              <div className="bg-card rounded-2xl p-6 border border-border/50 shadow-sm relative overflow-hidden group hover:border-green-500/50 transition-colors">
+                <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-4">
+                  <Code2 className="w-6 h-6 text-green-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">DSA Mastery</h3>
+                <p className="text-muted-foreground">Crack the coding rounds with structured Data Structures and Algorithms practice.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
+      <Footer />
     </div>
   );
 }

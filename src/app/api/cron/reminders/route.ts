@@ -122,18 +122,20 @@ export async function GET(request: Request) {
         `;
 
         try {
-          // Note: When testing locally without a verified domain, Resend requires you to send TO the email you registered with,
-          // OR you can use 'onboarding@resend.dev' as the from address for testing.
-          await resend.emails.send({
+          const { data, error } = await resend.emails.send({
             from: '90 Days Sprint <onboarding@resend.dev>',
             to: email,
             subject: `🔥 Keep your ${streakCount}-day streak alive!`,
             html: htmlMessage,
           });
           
-          emailsSent.push(email);
+          if (error) {
+            console.error(`Resend API error for ${email}:`, error);
+          } else {
+            emailsSent.push(email);
+          }
         } catch (err: any) {
-          console.error(`Failed to send email to ${email}:`, err);
+          console.error(`Exception sending email to ${email}:`, err);
         }
       }
     }

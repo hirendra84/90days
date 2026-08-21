@@ -1,4 +1,5 @@
 import { DashboardNav } from "@/components/dashboard-nav"
+import { Footer } from "@/components/footer"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 
@@ -25,6 +26,7 @@ export default async function DashboardLayout({
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8">
         {children}
       </main>
+      <Footer />
     </div>
   )
 }
