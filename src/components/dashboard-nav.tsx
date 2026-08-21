@@ -35,7 +35,7 @@ export function DashboardNav({ streak = 0, userInitials = "U", isAdmin = false }
             </SheetTrigger>
             <SheetContent side="left" className="w-[300px] sm:w-[400px]">
               <SheetHeader>
-                <SheetTitle className="text-left font-bold tracking-tighter">90D Sprint</SheetTitle>
+                <SheetTitle className="text-left font-bold tracking-tighter">90dayPrep</SheetTitle>
               </SheetHeader>
               <div className="grid gap-2 py-6">
                 {navItems.map((item) => (
@@ -70,7 +70,7 @@ export function DashboardNav({ streak = 0, userInitials = "U", isAdmin = false }
 
         <div className="mr-8 flex items-center">
           <Link href="/dashboard" className="flex items-center space-x-2">
-            <span className="font-bold text-xl tracking-tighter">90D</span>
+            <span className="font-bold text-xl tracking-tighter">90dayPrep</span>
           </Link>
         </div>
         

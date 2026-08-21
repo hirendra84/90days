@@ -17,7 +17,7 @@ export default function AuthLayout({
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-orange-500/10"></div>
         <div className="relative z-10 max-w-md space-y-6 text-center">
           <Link href="/" className="inline-block font-bold text-4xl tracking-tighter mb-4">
-            90D
+            90dayPrep
           </Link>
           <h2 className="text-3xl font-bold">The 90-Day Sprint</h2>
           <p className="text-muted-foreground text-lg text-balance">

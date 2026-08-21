@@ -48,7 +48,7 @@ export async function GET(request: Request) {
           
           // Send reminder via Gmail
           const mailOptions = {
-            from: `"90 Days Sprint" <${process.env.EMAIL_USER}>`,
+            from: `"90dayPrep" <${process.env.EMAIL_USER}>`,
             to: user.email,
             subject: "⚠️ Don't let your streak die! Keep the momentum going.",
             html: `
@@ -84,7 +84,7 @@ export async function GET(request: Request) {
                 </div>
                 
                 <div style="text-align: center; margin-top: 20px;">
-                  <p style="color: #9ca3af; font-size: 12px;">© 90 Days Placement Sprint. All rights reserved.</p>
+                  <p style="color: #9ca3af; font-size: 12px;">© 90dayPrep. All rights reserved.</p>
                 </div>
               </div>
             `,

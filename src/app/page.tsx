@@ -9,7 +9,7 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen">
       <header className="px-6 lg:px-14 h-16 flex items-center border-b border-border/40 backdrop-blur-md fixed top-0 w-full z-50">
         <Link className="flex items-center justify-center font-bold text-xl tracking-tighter" href="/">
-          90D
+          90dayPrep
         </Link>
         
         {/* Desktop Nav */}
@@ -46,7 +46,7 @@ export default function LandingPage() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
               <SheetHeader>
-                <SheetTitle className="text-left font-bold tracking-tighter">90D Sprint</SheetTitle>
+                <SheetTitle className="text-left font-bold tracking-tighter">90dayPrep</SheetTitle>
               </SheetHeader>
               <div className="grid gap-4 py-6">
                 <Link className="text-lg font-medium hover:text-primary/80 transition-colors" href="#features">
@@ -89,7 +89,7 @@ export default function LandingPage() {
             </div>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter sm:text-6xl text-balance">
-              90 Days.<br />
+              90dayPrep.<br />
               4 Skills.<br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-500">One Streak.</span>
             </h1>
@@ -125,7 +125,7 @@ export default function LandingPage() {
                   <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
                   <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
                 </div>
-                <div className="mx-auto bg-background/50 rounded-md px-24 py-1 text-xs text-muted-foreground border border-border/50">90d.placement.app</div>
+                <div className="mx-auto bg-background/50 rounded-md px-24 py-1 text-xs text-muted-foreground border border-border/50">90dayPrep.app</div>
               </div>
 
               {/* Mockup Dashboard Area */}

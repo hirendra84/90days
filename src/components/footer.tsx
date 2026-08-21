@@ -6,7 +6,7 @@ export function Footer() {
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex flex-col items-center md:items-start">
           <Link href="/dashboard" className="flex items-center space-x-2">
-            <span className="font-bold text-xl tracking-tighter">90 Days Placement</span>
+            <span className="font-bold text-xl tracking-tighter">90dayPrep</span>
           </Link>
           <p className="text-sm text-muted-foreground mt-2 text-center md:text-left max-w-sm">
             Your daily companion for crushing placement prep. Master Logical Reasoning, Aptitude, Verbal, and DSA step-by-step.
@@ -22,7 +22,7 @@ export function Footer() {
         </div>
         
         <div className="text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} 90D Sprint. All rights reserved.
+          &copy; {new Date().getFullYear()} 90dayPrep. All rights reserved.
         </div>
       </div>
     </footer>

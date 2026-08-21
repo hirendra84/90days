@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     })
 
     const mailOptions = {
-      from: `"90 Days Sprint Support" <${process.env.EMAIL_USER}>`,
+      from: `"90dayPrep Support" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER, // Send it to yourself
       replyTo: email, // If you hit "Reply" it will go to the user's email
       subject: `New Support Request: ${issueType}`,

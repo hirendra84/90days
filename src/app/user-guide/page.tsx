@@ -4,8 +4,8 @@ import { ArrowLeft, BookOpen, CheckCircle2, Trophy, Clock, Target } from "lucide
 import { Footer } from "@/components/footer";
 
 export const metadata = {
-  title: "User Guide | 90 Days Placement Sprint",
-  description: "Learn how to maximize your placement preparation with the 90 Days Sprint platform.",
+  title: "User Guide | 90dayPrep",
+  description: "Learn how to maximize your placement preparation with the 90dayPrep platform.",
 };
 
 export default function UserGuidePage() {
@@ -13,7 +13,7 @@ export default function UserGuidePage() {
     <div className="flex flex-col min-h-screen">
       <header className="px-6 lg:px-14 h-16 flex items-center border-b border-border/40 backdrop-blur-md fixed top-0 w-full z-50 bg-background/80">
         <Link className="flex items-center justify-center font-bold text-xl tracking-tighter" href="/">
-          90D
+          90dayPrep
         </Link>
         <nav className="ml-auto flex gap-4 items-center">
           <Link href="/">

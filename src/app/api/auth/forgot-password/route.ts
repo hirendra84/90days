@@ -42,13 +42,13 @@ export async function POST(request: Request) {
     })
 
     const mailOptions = {
-      from: `"90 Days Sprint" <${process.env.EMAIL_USER}>`,
+      from: `"90dayPrep" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: "Reset your 90 Days Sprint password",
+      subject: "Reset your 90dayPrep password",
       html: `
         <div style="font-family: sans-serif; padding: 20px;">
           <h1 style="color: #111;">Password Reset</h1>
-          <p>You requested a password reset for your 90 Days Sprint account.</p>
+          <p>You requested a password reset for your 90dayPrep account.</p>
           <p>Click the link below to set a new password. This link will expire in 1 hour.</p>
           <a href="${resetUrl}" style="display: inline-block; padding: 12px 24px; background-color: #f97316; color: white; text-decoration: none; border-radius: 6px; margin-top: 10px;">Reset Password</a>
           <p style="margin-top: 20px; font-size: 12px; color: #666;">If you didn't request this, you can safely ignore this email.</p>

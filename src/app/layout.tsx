@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "90 Days Placement Sprint",
+  title: "90dayPrep",
   description: "Build the consistency you need to crack your next placement.",
 };
 
