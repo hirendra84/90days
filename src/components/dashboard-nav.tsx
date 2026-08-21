@@ -18,7 +18,7 @@ const navItems = [
   { name: "Resources", href: "/resources" },
 ]
 
-export function DashboardNav({ streak = 0, userInitials = "U" }: { streak?: number, userInitials?: string }) {
+export function DashboardNav({ streak = 0, userInitials = "U", isAdmin = false }: { streak?: number, userInitials?: string, isAdmin?: boolean }) {
   const pathname = usePathname()
 
   return (
@@ -44,6 +44,18 @@ export function DashboardNav({ streak = 0, userInitials = "U" }: { streak?: numb
               {item.name}
             </Link>
           ))}
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className={`transition-colors hover:text-foreground/80 px-3 py-2 rounded-md ${
+                pathname.startsWith('/admin')
+                  ? "bg-primary text-primary-foreground font-semibold shadow-sm"
+                  : "text-primary/80 border border-primary/20"
+              }`}
+            >
+              Admin
+            </Link>
+          )}
         </div>
 
         <div className="flex flex-1 items-center justify-end space-x-4">
